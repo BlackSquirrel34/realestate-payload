@@ -1,4 +1,15 @@
 import type { CollectionConfig } from 'payload'
+import { Property, Zipcode } from '@/payload-types'
+
+export interface PropertyWithAddress extends Property {
+  address: {
+    street: string
+    city: string
+    state_abbr: string
+    state_name: string
+    zip: string
+  }
+}
 
 export const Properties: CollectionConfig = {
   slug: 'properties',
@@ -61,4 +72,27 @@ export const Properties: CollectionConfig = {
       ],
     },
   ],
+  hooks: {
+    afterRead: [
+      async ({ doc }) => {
+        const zipcode = doc.zipcode as Zipcode
+        const address = {
+          street: doc.street!,
+          city: zipcode.city!,
+          state_abbr: zipcode.state_abbr!,
+          state_name: zipcode.state_name!,
+          zip: zipcode.code!,
+        }
+        doc.address = address
+        const docWithAddress = {
+          ...doc,
+          address,
+          zipcode: undefined,
+          street: undefined,
+        } as PropertyWithAddress
+        // cleaning up with setting to undefined to avoid publicates
+        return docWithAddress
+      },
+    ],
+  },
 }
