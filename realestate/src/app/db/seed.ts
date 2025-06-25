@@ -7,6 +7,14 @@ async function seed() {
 
   const payload = await getPayload({ config })
 
+  // clear all previous collections
+  await payload.delete({
+    collection: 'zipcodes',
+    where: {},
+  })
+
+  console.log('Clearing zipcodes collection first...')
+
   await seedZipCodes(payload)
 }
 
