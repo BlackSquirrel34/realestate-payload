@@ -9,7 +9,7 @@ export const ZipCodes: CollectionConfig = {
   admin: {
     useAsTitle: 'code',
   },
-  auth: true,
+  // auth: true,
   fields: [
     {
       name: 'code',

@@ -1,9 +1,10 @@
 import csv from 'csv-parser'
 import fs from 'fs'
 import path, { dirname } from 'path'
+import { Payload } from 'payload'
 import { fileURLToPath } from 'url'
 
-export async function seedZipCodes() {
+export async function seedZipCodes(payload: Payload) {
   const __filename = fileURLToPath(import.meta.url)
   const __dirname = dirname(__filename)
   const csvFilePath = path.resolve(__dirname, './zip_code_database.csv')
@@ -17,7 +18,7 @@ export async function seedZipCodes() {
       .on('data', (data: any) => {
         // filter by target counties
         zipCodes.push({
-          zip: Number(data.code),
+          code: Number(data.code),
           city: data.city,
           state_abbr: data.state_abbr,
           state_name: 'Tennessee',
@@ -37,4 +38,10 @@ export async function seedZipCodes() {
         reject(error)
       })
   })
+  for (const zipCode of zipCodes) {
+    await payload.create({
+      collection: 'zipcodes',
+      data: zipCode,
+    })
+  }
 }

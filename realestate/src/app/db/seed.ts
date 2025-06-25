@@ -1,9 +1,13 @@
 import { seedZipCodes } from './seeders/zipcodes'
+import config from '@/payload.config'
+import { getPayload, Payload } from 'payload'
 
 async function seed() {
   console.log('Seeding database...')
 
-  await seedZipCodes()
+  const payload = await getPayload({ config })
+
+  await seedZipCodes(payload)
 }
 
 seed()
