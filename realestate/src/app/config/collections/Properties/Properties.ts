@@ -71,6 +71,12 @@ export const Properties: CollectionConfig = {
         },
       ],
     },
+    {
+      name: 'features',
+      type: 'relationship',
+      relationTo: 'features',
+      hasMany: true,
+    },
   ],
   hooks: {
     afterRead: [
@@ -84,14 +90,8 @@ export const Properties: CollectionConfig = {
           zip: zipcode.code!,
         }
         doc.address = address
-        const docWithAddress = {
-          ...doc,
-          address,
-          zipcode: undefined,
-          street: undefined,
-        } as PropertyWithAddress
-        // cleaning up with setting to undefined to avoid publicates
-        return docWithAddress
+
+        return doc
       },
     ],
   },
