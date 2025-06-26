@@ -15,6 +15,7 @@ export const Properties: CollectionConfig = {
   slug: 'properties',
   admin: {
     useAsTitle: 'title',
+    preview: ({ id }) => `http://localhost:3000/properties/${id}`,
   },
   // auth: true,
   fields: [
