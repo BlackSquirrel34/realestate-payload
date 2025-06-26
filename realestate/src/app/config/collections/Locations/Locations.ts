@@ -1,21 +1,21 @@
 import type { CollectionConfig } from 'payload'
 
-export const ZipCodes: CollectionConfig = {
-  slug: 'zipcodes',
+export const Locations: CollectionConfig = {
+  slug: 'locations',
   /*  auth: {
     useAPIKey: true,
   }, */
   labels: {
-    singular: 'Zip Code',
-    plural: 'Zip Codes',
+    singular: 'Location',
+    plural: 'Locations',
   },
   admin: {
-    useAsTitle: 'code',
+    useAsTitle: 'zip',
   },
   auth: false,
   fields: [
     {
-      name: 'code',
+      name: 'zip',
       type: 'text',
       unique: true,
       label: 'Zip Code',

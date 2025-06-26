@@ -1,13 +1,21 @@
+import { AfterReadHook } from 'node_modules/payload/dist/collections/config/types'
 import type { CollectionConfig } from 'payload'
-import { Property, Zipcode } from '@/payload-types'
+import type { JSONSchema4 } from 'json-schema'
 
-export interface PropertyWithAddress extends Property {
-  address: {
-    street: string
-    city: string
-    state_abbr: string
-    state_name: string
-    zip: string
+const formatAddress: AfterReadHook = async ({ doc }) => {
+  console.log({ doc }, { location: doc.location })
+  // you can add to the document but ensure to not remove anything
+  // make sure to add any new virtual fields BELOW the doc
+
+  return {
+    ...doc,
+    address: {
+      street: doc.street,
+      city: doc.location.city,
+      state: doc.location.state_name,
+      state_abbr: doc.location.state_abbr,
+      zip: doc.location.zip,
+    },
   }
 }
 
@@ -35,9 +43,35 @@ export const Properties: CollectionConfig = {
       label: 'Street Address',
     },
     {
-      name: 'zipcode',
+      name: 'address',
+      type: 'text',
+      required: true,
+      admin: {
+        hidden: false,
+      },
+      /*       payload types thinks address iwil be a string. but we want an object. */
+      typescriptSchema: [
+        () => {
+          const address: JSONSchema4 = {
+            type: 'object',
+            properties: {
+              street: { type: 'string' },
+              city: { type: 'string' },
+              state: { type: 'string' },
+              state_abbr: { type: 'string' },
+              zip: { type: 'string' },
+            },
+            required: ['street', 'city', 'state', 'state_abbr', 'zip'],
+          }
+
+          return address
+        },
+      ],
+    },
+    {
+      name: 'location',
       type: 'relationship',
-      relationTo: 'zipcodes',
+      relationTo: 'locations',
       required: true,
       hasMany: false, // only one zipcode can be connected
       admin: {
@@ -84,20 +118,6 @@ export const Properties: CollectionConfig = {
     },
   ],
   hooks: {
-    afterRead: [
-      async ({ doc }) => {
-        const zipcode = doc.zipcode as Zipcode
-        const address = {
-          street: doc.street!,
-          city: zipcode.city!,
-          state_abbr: zipcode.state_abbr!,
-          state_name: zipcode.state_name!,
-          zip: zipcode.code!,
-        }
-        doc.address = address
-
-        return doc
-      },
-    ],
+    afterRead: [formatAddress],
   },
 }

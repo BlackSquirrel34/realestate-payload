@@ -1,5 +1,5 @@
-import { PropertyWithAddress } from '@/app/config/collections/Properties/Properties'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Property } from '@/payload-types'
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
@@ -10,7 +10,7 @@ export default async function PropertiesPage({ params }: { params: { id: string 
   const property = (await payload.findByID({
     collection: 'properties',
     id,
-  })) as PropertyWithAddress
+  })) as Property
 
   return (
     <div className="w-screen p-12 flex justify-center bg-accent text-sm">
@@ -21,10 +21,7 @@ export default async function PropertiesPage({ params }: { params: { id: string 
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
             <div className="flex flex-row gap-1">
-              <p>{property.address.street}</p>
-              <p>{property.address.city}</p>
-              <p>{property.address.state_abbr}</p>
-              <p>{property.address.zip}</p>
+              {property.address.street}, {property.address.city}, {property.address.state_abbr}
             </div>
             <div className="flex flex-row gap-3">
               <h3 className="font-bold">Features</h3>
