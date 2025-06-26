@@ -2,7 +2,10 @@ import { CollectionConfig } from 'payload'
 
 export const Features: CollectionConfig = {
   slug: 'features',
-  // auth: true,
+  /*   auth: {
+    useAPIKey: true,
+  }, */
+  auth: false,
   admin: {
     useAsTitle: 'name',
   },

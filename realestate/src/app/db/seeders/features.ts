@@ -72,15 +72,25 @@ const allFeatures = [
   ...otherFeatures.map((feature) => ({ ...feature, category: 'other' as FeatureCategory })),
 ]
 
-export const seedFeatures = async (payload: Payload) => {
-  console.log('Seeding features...')
+export const seedFeatures = async (payload: Payload): Promise<void> => {
+  try {
+    const createPromises = allFeatures.map((feature) =>
+      payload.create({
+        collection: 'features',
+        data: feature,
+      }),
+    )
 
-  const createPromises = allFeatures.map((feature) =>
-    payload.create({
-      collection: 'features',
-      data: feature,
-    }),
-  )
-
-  await Promise.all(createPromises)
+    // Wait for all creations to complete
+    if (createPromises.length > 0) {
+      await Promise.all(createPromises)
+      console.log(`Created ${createPromises.length} new features`)
+    } else {
+      console.log('No new features to create')
+    }
+  } catch (error) {
+    console.error('Error seeding features:', error)
+  }
 }
+
+export default seedFeatures

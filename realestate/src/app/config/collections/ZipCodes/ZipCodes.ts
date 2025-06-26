@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 export const ZipCodes: CollectionConfig = {
   slug: 'zipcodes',
+  /*  auth: {
+    useAPIKey: true,
+  }, */
   labels: {
     singular: 'Zip Code',
     plural: 'Zip Codes',
@@ -9,7 +12,7 @@ export const ZipCodes: CollectionConfig = {
   admin: {
     useAsTitle: 'code',
   },
-  // auth: true,
+  auth: false,
   fields: [
     {
       name: 'code',

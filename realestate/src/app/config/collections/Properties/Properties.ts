@@ -13,11 +13,15 @@ export interface PropertyWithAddress extends Property {
 
 export const Properties: CollectionConfig = {
   slug: 'properties',
+  /*  auth: {
+    useAPIKey: true,
+    disableLocalStrategy: true,
+  }, */
   admin: {
     useAsTitle: 'title',
     preview: ({ id }) => `http://localhost:3000/properties/${id}`,
   },
-  // auth: true,
+  auth: false,
   fields: [
     {
       name: 'title',
