@@ -1,6 +1,7 @@
 import { seedZipCodes } from './seeders/zipcodes'
 import config from '@/payload.config'
 import { getPayload, Payload } from 'payload'
+import { seedFeatures } from './seeders/features'
 
 async function seed() {
   console.log('Seeding database...')
@@ -8,14 +9,27 @@ async function seed() {
   const payload = await getPayload({ config })
 
   // clear all previous collections
+  // NOTE: this was not sufficient. we need to manually delete in supabase for this to work.
   await payload.delete({
     collection: 'zipcodes',
     where: {},
   })
 
-  console.log('Clearing zipcodes collection first...')
+  await payload.delete({
+    collection: 'properties',
+    where: {},
+  })
+
+  await payload.delete({
+    collection: 'features',
+    where: {},
+  })
+
+  console.log('Clearing all collections first...')
+  console.log('Seeding starts now...')
 
   await seedZipCodes(payload)
+  await seedFeatures(payload)
 }
 
 seed()

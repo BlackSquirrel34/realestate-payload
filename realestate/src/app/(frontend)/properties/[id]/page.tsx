@@ -4,11 +4,12 @@ import config from '@payload-config'
 import { getPayload } from 'payload'
 
 export default async function PropertiesPage({ params }: { params: { id: string } }) {
-  console.log('params:', params) // <-- add this line
+  /*   getting params asynchronously: otherwise we'll get a warning */
+  const { id } = await params
   const payload = await getPayload({ config })
   const property = (await payload.findByID({
     collection: 'properties',
-    id: params.id,
+    id,
   })) as PropertyWithAddress
 
   return (
@@ -30,6 +31,7 @@ export default async function PropertiesPage({ params }: { params: { id: string 
               <ul>
                 {property.features?.map((feature) => {
                   /*   the next line is just to avod typescript warnings in case no feature is there */
+                  /*  see the payload types: woth depth 1 features is not a number, but with depth 0 its a number */
                   if (typeof feature === 'number') return null
                   return (
                     <li key={feature.id}>
