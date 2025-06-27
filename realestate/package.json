@@ -16,6 +16,7 @@
     "db:seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/app/db/seed.ts"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.8.0",
     "@payloadcms/db-postgres": "3.43.0",
     "@payloadcms/next": "3.43.0",
     "@payloadcms/payload-cloud": "3.43.0",

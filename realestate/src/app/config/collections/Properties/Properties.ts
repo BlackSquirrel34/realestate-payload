@@ -31,6 +31,15 @@ export const Properties: CollectionConfig = {
   },
   auth: false,
   fields: [
+    // generating cutom id, length 8 bytes using helper function from lib
+    /*  {
+      name: 'id',
+      type: 'text',
+      admin: {
+        hidden: true,
+      },
+      defaultValue: () => generatePrimaryKey(8),
+    }, */
     {
       name: 'title',
       type: 'text',
@@ -45,7 +54,7 @@ export const Properties: CollectionConfig = {
     {
       name: 'address',
       type: 'text',
-      required: true,
+      required: false,
       admin: {
         hidden: false,
       },
