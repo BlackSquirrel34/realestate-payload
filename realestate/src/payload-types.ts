@@ -186,7 +186,7 @@ export interface Location {
  * via the `definition` "properties".
  */
 export interface Property {
-  id: number;
+  id: string;
   title: string;
   street: string;
   address?: {
@@ -204,6 +204,13 @@ export interface Property {
   price?: number | null;
   listingStatus: 'forsale' | 'pending' | 'contract' | 'sold' | 'notforsale';
   features?: (number | Feature)[] | null;
+  details?: {
+    bedrooms?: number | null;
+    bathrooms?: number | null;
+    squareFeet?: number | null;
+    lotSize?: number | null;
+    yearBuilt?: number | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -242,7 +249,7 @@ export interface PayloadLockedDocument {
       } | null)
     | ({
         relationTo: 'properties';
-        value: number | Property;
+        value: string | Property;
       } | null)
     | ({
         relationTo: 'features';
@@ -344,6 +351,7 @@ export interface LocationsSelect<T extends boolean = true> {
  * via the `definition` "properties_select".
  */
 export interface PropertiesSelect<T extends boolean = true> {
+  id?: T;
   title?: T;
   street?: T;
   address?: T;
@@ -351,6 +359,15 @@ export interface PropertiesSelect<T extends boolean = true> {
   price?: T;
   listingStatus?: T;
   features?: T;
+  details?:
+    | T
+    | {
+        bedrooms?: T;
+        bathrooms?: T;
+        squareFeet?: T;
+        lotSize?: T;
+        yearBuilt?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

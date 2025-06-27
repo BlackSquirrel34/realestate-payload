@@ -1,6 +1,7 @@
 import { AfterReadHook } from 'node_modules/payload/dist/collections/config/types'
 import type { CollectionConfig } from 'payload'
 import type { JSONSchema4 } from 'json-schema'
+import { generatePrimaryKey } from '@/lib/generate-primary-key'
 
 const formatAddress: AfterReadHook = async ({ doc }) => {
   console.log({ doc }, { location: doc.location })
@@ -27,19 +28,22 @@ export const Properties: CollectionConfig = {
   }, */
   admin: {
     useAsTitle: 'title',
+    defaultColumns: ['street', 'location', 'price', 'listingStatus'],
     preview: ({ id }) => `http://localhost:3000/properties/${id}`,
   },
-  auth: false,
+  /*   auth: true, */
   fields: [
     // generating cutom id, length 8 bytes using helper function from lib
-    /*  {
+    {
       name: 'id',
       type: 'text',
+      required: true,
+      unique: true,
       admin: {
-        hidden: true,
+        disabled: true,
       },
       defaultValue: () => generatePrimaryKey(8),
-    }, */
+    },
     {
       name: 'title',
       type: 'text',
@@ -56,7 +60,7 @@ export const Properties: CollectionConfig = {
       type: 'text',
       required: false,
       admin: {
-        hidden: false,
+        hidden: true,
       },
       /*       payload types thinks address iwil be a string. but we want an object. */
       typescriptSchema: [
@@ -124,6 +128,33 @@ export const Properties: CollectionConfig = {
       type: 'relationship',
       relationTo: 'features',
       hasMany: true,
+    },
+    // details
+    {
+      name: 'details',
+      type: 'group',
+      fields: [
+        {
+          name: 'bedrooms',
+          type: 'number',
+        },
+        {
+          name: 'bathrooms',
+          type: 'number',
+        },
+        {
+          name: 'squareFeet',
+          type: 'number',
+        },
+        {
+          name: 'lotSize',
+          type: 'number',
+        },
+        {
+          name: 'yearBuilt',
+          type: 'number',
+        },
+      ],
     },
   ],
   hooks: {
